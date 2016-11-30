@@ -179,6 +179,10 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UFWeapon)
 		float currentKick;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UFWeapon)
+		ACharacter* owningCharacter;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
@@ -186,8 +190,6 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	virtual void Fire() PURE_VIRTUAL(AUFWeapon::FireWeapon, );
-	
-	ACharacter* owningCharacter;
 
 	void StopFire();
 
@@ -241,7 +243,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = UFWeapon)
 		void CycleIsSelected() { isSelected = !isSelected; }
 
-
 	UFUNCTION(BlueprintCallable, Category = UFWeapon)
 		bool IsOnGround();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = UFWeapon)
+		void Fire_Event();
 };

@@ -13,7 +13,7 @@ AUFWeapon_Instant_Fire::AUFWeapon_Instant_Fire()
 void AUFWeapon_Instant_Fire::Fire()
 {
 	
-
+	Fire_Event();
 	if (ProjectileClass)
 	{
 		FRotator rotation = owningCharacter->GetControlRotation();
