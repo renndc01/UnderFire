@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+/*Base Weapon Info*/
 #include "UnderFire.h"
 #include "UFWeapon.h"
 #include "Engine.h"
