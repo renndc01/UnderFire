@@ -186,9 +186,14 @@ void AUFWeapon::StartFire()
 	
 }
 
+bool AUFWeapon::NeedsToReload()
+{
+	return ClipCurrentAmmo <= 0;
+}
+
 void AUFWeapon::HandleFiring()
 {
-	if (ClipCurrentAmmo <= 0 && CanReload())
+	if (NeedsToReload() && CanReload())
 	{
 		Reload();
 	}
@@ -217,7 +222,7 @@ void AUFWeapon::HandleFiring()
 	shouldFireAgain = (FireType == EWeaponFireType::Full && CurrentState == EWeaponState::Firing && TimeBetweenShots > 0.0f);
 	if (shouldFireAgain)
 	{
-		GetWorldTimerManager().SetTimer(TimerHandle_HandleFiring, this, &AUFWeapon::HandleFiring, TimeBetweenShots, false);
+		GetWorldTimerManager().SetTimer(TimerHandle_HandleFiring, this, &AUFWeapon::BurstFireStart, TimeBetweenShots, false);
 	}
 	LastTimeFired = GetWorld()->GetTimeSeconds();
 	//DetermineWeaponState();

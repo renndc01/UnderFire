@@ -234,6 +234,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = UFWeapon)
 		void ReloadEnd();
+	
+	UFUNCTION(BlueprintCallable, Category = UFWeapon)
+		bool NeedsToReload();
+
 	UFUNCTION(BlueprintCallable, Category = UFWeapon)
 		void ReloadStart();
 

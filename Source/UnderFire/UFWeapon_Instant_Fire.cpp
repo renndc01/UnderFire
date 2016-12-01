@@ -16,7 +16,7 @@ void AUFWeapon_Instant_Fire::Fire()
 	Fire_Event();
 	if (ProjectileClass)
 	{
-		FRotator rotation = owningCharacter->GetControlRotation();
+		FRotator rotation = WeaponMesh->GetSocketRotation("Muzzle");//owningCharacter->GetActorRotation();//GetControlRotation();
 		const FVector location = WeaponMesh->GetSocketLocation("Muzzle"); //+ owningCharacter->GetActorLocation();
 		float tempSpread = WeaponSpread * .1;
 		if (currentKick > 0)

@@ -20,7 +20,6 @@ AUnderFirePlayerCharacter::AUnderFirePlayerCharacter()
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
 	FirstPersonCameraComponent->RelativeLocation = FVector(20.0f, 10.0f, 75.0f); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
-
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
 	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
 	Mesh1P->SetOnlyOwnerSee(true);
@@ -29,9 +28,6 @@ AUnderFirePlayerCharacter::AUnderFirePlayerCharacter()
 	Mesh1P->CastShadow = false;
 	Mesh1P->RelativeRotation = FRotator(1.9f, -19.19f, 5.2f);
 	Mesh1P->RelativeLocation = FVector(-0.5f, -4.4f, -155.7f);
-
-
-
 
 	// Create a gun mesh component
 	FP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
@@ -71,6 +67,8 @@ AUnderFirePlayerCharacter::AUnderFirePlayerCharacter()
 	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
+	VrCameraOffset = FVector(0, 0, 0);
+
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
 	isActionButtonPressed = false;
@@ -85,6 +83,14 @@ void AUnderFirePlayerCharacter::BeginPlay()
 
 	if (GEngine)
 	{
+		if (GEngine->HMDDevice.IsValid())
+		{
+			FirstPersonCameraComponent->SetRelativeLocation(VrCameraOffset);
+		}
+		else
+		{
+			
+		}
 	}
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
 	FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));

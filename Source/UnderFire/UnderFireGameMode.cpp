@@ -20,7 +20,7 @@ AUnderFireGameMode::AUnderFireGameMode(const FObjectInitializer& ObjectInitializ
 	
 	//DefaultPawnClass = AUnderFirePlayerCharacter::StaticClass();
 	// use our custom HUD class
-	HUDClass = AUnderFireHUD::StaticClass();
+	//HUDClass = AUnderFireHUD::StaticClass();
 }
 
 

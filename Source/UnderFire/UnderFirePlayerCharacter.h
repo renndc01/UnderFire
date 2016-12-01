@@ -46,6 +46,8 @@ class UNDERFIRE_API AUnderFirePlayerCharacter : public AUnderFireCharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		class UMotionControllerComponent* L_MotionController;
 
+
+
 private:
 	bool isFButtonPressed;
 	float timeFButtonPressed;
@@ -99,4 +101,8 @@ public:
 	/** Whether to use motion controller location for aiming. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		uint32 bUsingMotionControllers : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
+		FVector VrCameraOffset;
+
 };
