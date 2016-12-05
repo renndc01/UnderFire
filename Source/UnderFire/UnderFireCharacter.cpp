@@ -275,6 +275,8 @@ TArray<AUFWeapon*> AUnderFireCharacter::GetInventory()
 void AUnderFireCharacter::CycleNextWeapon()
 {
 	currentWeapon->CycleIsSelected();
+	currentWeapon->WeaponMesh->SetHiddenInGame(true);
+
 	currentInventoryIndex++;
 	if (currentInventoryIndex >= inventory.Num())
 	{
@@ -283,18 +285,22 @@ void AUnderFireCharacter::CycleNextWeapon()
 	
 	currentWeapon = inventory[currentInventoryIndex];
 	currentWeapon->CycleIsSelected();
+	currentWeapon->WeaponMesh->SetHiddenInGame(false);
 }
 
 void AUnderFireCharacter::CyclePreviousWeapon()
 {
 	currentWeapon->CycleIsSelected();
+	currentWeapon->WeaponMesh->SetHiddenInGame(true);
 	currentInventoryIndex--;
 	if (currentInventoryIndex <= 0)
 	{
 		currentInventoryIndex = inventory.Num() - 1;
 	}
+	
 	currentWeapon = inventory[currentInventoryIndex];
 	currentWeapon->CycleIsSelected();
+	
 }
 
 bool AUnderFireCharacter::CharacterHasWeapon(AUFWeapon* weapon)

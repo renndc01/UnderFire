@@ -33,6 +33,9 @@ AUFWeapon::AUFWeapon()
 	currentKick = 0.f;
 	WeaponSpreadPercent = 0.f;
 	MaxDamage = 0.f;
+	NoEquipAnimTime = 0.f;
+	isTakingOut = false;
+	isPuttingAway = false;
 
 	MuzzleOffSet = FVector(0.f, 0.f, 0.f);
 	WeaponPositionOffSet = FVector(0.f, 0.f, 0.f);
@@ -65,7 +68,7 @@ void AUFWeapon::AttachToOwner()
 {
 	AttachRootComponentTo(owningCharacter->GetMesh(), "middle_01_r", EAttachLocation::SnapToTarget);
 	//SetActorLocation(GetActorLocation() + WeaponPositionOffSet);
-	WeaponMesh->SetWorldLocationAndRotation(WeaponMesh->GetComponentLocation() + WeaponPositionOffSet, WeaponRotationOffSet);
+	WeaponMesh->SetRelativeLocationAndRotation(WeaponPositionOffSet, WeaponRotationOffSet.Quaternion());//SetWorldLocationAndRotation(WeaponMesh->GetComponentLocation() + WeaponPositionOffSet, WeaponRotationOffSet);
 	//WeaponMesh->SetWorldRotation(WeaponRotationOffSet);
 	//SetActorRotation(WeaponRotationOffSet);
 }
@@ -339,4 +342,28 @@ bool AUFWeapon::CanFire()
 bool AUFWeapon::IsOnGround()
 {
 	return owningCharacter == NULL;
+}
+
+void AUFWeapon::Equip()
+{
+	CycleIsSelected();
+	
+	WeaponMesh->SetHiddenInGame(false);
+}
+
+void AUFWeapon::UnEquip()
+{
+	isPuttingAway = false;
+	CycleIsSelected();
+	WeaponMesh->SetHiddenInGame(true);
+	isTakingOut = true;
+	GetWorldTimerManager().SetTimer(TimerHandle_HandleFiring, this, &AUFWeapon::Equip, NoEquipAnimTime, false);
+
+}
+
+void AUFWeapon::swap()
+{
+	isPuttingAway = true;
+	GetWorldTimerManager().SetTimer(TimerHandle_HandleFiring, this, &AUFWeapon::UnEquip, NoEquipAnimTime, false);
+
 }

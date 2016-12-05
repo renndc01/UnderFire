@@ -150,6 +150,9 @@ public:
 		float NoAnimReloadTime;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFWeaponInfo)
+		float NoEquipAnimTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFWeaponInfo)
 		float Velocity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFWeaponInfo)
@@ -182,6 +185,12 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UFWeapon)
 		ACharacter* owningCharacter;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UFWeapon)
+		bool isTakingOut;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UFWeapon)
+		bool isPuttingAway;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -246,6 +255,15 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = UFWeapon)
 		void CycleIsSelected() { isSelected = !isSelected; }
+
+	UFUNCTION(BlueprintCallable, Category = UFWeapon)
+		void Equip();
+	
+	UFUNCTION(BlueprintCallable, Category = UFWeapon)
+		void UnEquip();
+
+	UFUNCTION(BlueprintCallable, Category = UFWeapon)
+		void swap();
 
 	UFUNCTION(BlueprintCallable, Category = UFWeapon)
 		bool IsOnGround();

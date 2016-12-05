@@ -85,7 +85,7 @@ void AUnderFirePlayerCharacter::BeginPlay()
 	{
 		if (GEngine->HMDDevice.IsValid())
 		{
-			FirstPersonCameraComponent->SetRelativeLocation(VrCameraOffset);
+		//	FirstPersonCameraComponent->SetRelativeLocation(VrCameraOffset);
 		}
 		else
 		{
