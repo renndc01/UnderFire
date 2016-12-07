@@ -21,4 +21,5 @@ public:
 	AUFWeapon_Instant_Fire();
 
 	virtual	void Fire() override;
+
 };

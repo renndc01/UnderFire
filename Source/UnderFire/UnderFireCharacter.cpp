@@ -55,9 +55,10 @@ AUnderFireCharacter::AUnderFireCharacter()
 	isAIDS = false;
 	bodyLife = 60.f;
 	currentBodyLife = 0.f;
-	MaxDistanceToPickUp = 100.f;
-
-
+	MaxDistanceToInteract = 100.f;
+	RegenerateHealthPercentage = 0.f;
+	TimeFromHitToStartRegenerate = 0.f;
+	LastHitTime = 0.f;
 
 }
 
@@ -119,7 +120,11 @@ void AUnderFireCharacter::BeginPlay()
 void AUnderFireCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	float currentTime = GetWorld()->GetTimeSeconds();
+	if (LastHitTime > 0.f && (currentTime - TimeFromHitToStartRegenerate > LastHitTime))
+	{
+		RegenerateHealth();
+	}
 }
 
 void AUnderFireCharacter::OnFirePressed()
@@ -317,5 +322,20 @@ bool AUnderFireCharacter::CharacterHasWeapon(AUFWeapon* weapon)
 
 bool AUnderFireCharacter::IsCharacterCloseEnoughToInteract(AActor* otherActor)
 {
-	return (MaxDistanceToPickUp >= FVector::Dist(GetActorLocation(), otherActor->GetActorLocation()));
+	return (MaxDistanceToInteract >= FVector::Dist(GetActorLocation(), otherActor->GetActorLocation()));
+}
+
+void AUnderFireCharacter::DoDamage(float damage)
+{
+	DoDamage_Event();
+	CurrentHealth -= damage;
+}
+
+void AUnderFireCharacter::RegenerateHealth()
+{
+	CurrentHealth += RegenerateHealthPercentage * MaxHealth;
+	if (CurrentHealth > MaxHealth)
+	{
+		CurrentHealth = MaxHealth;
+	}
 }

@@ -113,11 +113,20 @@ public:
 		FString CharacterName;
 
 	//health stuff
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFCharacter)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFHealth)
 		float MaxHealth;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFCharacter)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFHealth)
 		float CurrentHealth;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UFHealth)
+		float LastHitTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFHealth)
+		float TimeFromHitToStartRegenerate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFHealth)
+		float RegenerateHealthPercentage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFCharacter)
 		bool isDead;
@@ -145,7 +154,7 @@ public:
 		bool isAIDS;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFCharacter)
-		float MaxDistanceToPickUp;
+		float MaxDistanceToInteract;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -166,7 +175,7 @@ public:
 	void CycleNextWeapon();
 	void CyclePreviousWeapon();
 
-
+	void RegenerateHealth();
 	/**
 	* Called via input to turn at a given rate.
 	* @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
@@ -206,4 +215,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = UFWeapon)
 		bool IsCharacterCloseEnoughToInteract(AActor* otherActor);
+
+	UFUNCTION(BlueprintCallable, Category = UFHealth)
+		void DoDamage(float damage);
+	
+	UFUNCTION(BlueprintImplementableEvent, Category = UFWeapon)
+		void DoDamage_Event();
 };

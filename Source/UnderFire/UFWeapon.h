@@ -171,6 +171,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFWeaponCollision)
 		USkeletalMeshComponent* WeaponMesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFWeaponCollision)
+		UStaticMeshComponent* WeaponStaticMesh;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFWeaponDebug)
 		bool DrawWeaponTrace;
 	
@@ -191,6 +195,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UFWeapon)
 		bool isPuttingAway;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UFWeaponInfo)
+		FName AttachTagName;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -268,6 +275,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = UFWeapon)
 		bool IsOnGround();
 
+	//UFUNCTION(BlueprintImplementableEvent, Category = UFWeapon)
+		//void DoDamage_Event(ACharacter* otherCharacter, float damage);
+
 	UFUNCTION(BlueprintImplementableEvent, Category = UFWeapon)
 		void Fire_Event();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = UFWeapon)
+		void Attach_To_Owner_Event();
+
 };

@@ -42,7 +42,9 @@ void AUFWeapon_Instant_Fire::Fire()
 		//projectile->EffectiveRange = EffectiveRange;
 		//projectile->Velocity = Velocity;
 		projectile->SetLifeSpan((EffectiveRange * 1.25) / Velocity);
-		projectile->DamageAmount = MaxDamage;
+		projectile->MaxLifeTime = (EffectiveRange * 1.25) / Velocity;
+		projectile->MaxDamage = MaxDamage;
+		//projectile->
 	}
 	/*const int32 randomSeed = FMath::Rand();
 	FRandomStream WeaponRandomStream(randomSeed);

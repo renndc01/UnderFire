@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "UFWeapon.h"
 #include "UFWeaponProjectile.generated.h"
 
 UCLASS()
@@ -20,6 +21,7 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UFWeapon)
+		AUFWeapon* owningWeapon;
 	
 };

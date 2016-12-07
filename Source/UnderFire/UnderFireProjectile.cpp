@@ -31,9 +31,18 @@ AUnderFireProjectile::AUnderFireProjectile()
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0;
 	DamageAmount = 0.f;
+	playTime = 0.f;
+	MaxLifeTime = 0.f;
+	DamageOnContact = false;
 	/*DrawWeaponTrace = false;
 	EffectiveRange = 0.f;
 	Velocity = 0.f;*/
+}
+
+void AUnderFireProjectile::Tick(float DeltaSeconds)
+{
+	playTime += DeltaSeconds;
+	DamageAmount = MaxDamage * (playTime / MaxLifeTime);
 }
 
 void AUnderFireProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -43,9 +52,21 @@ void AUnderFireProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100, GetActorLocation());
-		
 		//Destroy();
 	}
+
+	AUnderFireCharacter* UFCharacter = Cast<AUnderFireCharacter>(OtherActor);
+
+	if (UFCharacter && DamageOnContact)
+	{
+		DoDamage(UFCharacter, DamageAmount);
+	}
+}
+
+void AUnderFireProjectile::DoDamage(AUnderFireCharacter* HitCharacter, float damage)
+{
+	HitCharacter->DoDamage(damage);
+	DoDamage_Event();
 }
 /*
 FHitResult AUnderFireProjectile::WeaponTrace(const FVector &TraceFrom, const FVector & TraceTo) const

@@ -18,6 +18,8 @@ AUFWeapon::AUFWeapon()
 	//create the model
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon Mesh"));
 	WeaponMesh->AttachTo(RootComponent);
+	WeaponStaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon Static Mesh"));
+	WeaponStaticMesh->AttachTo(RootComponent);
 	DrawWeaponTrace = false;
 	CurrentState = EWeaponState::Idle;
 	isFiringWeapon = false;
@@ -66,9 +68,12 @@ void AUFWeapon::Tick( float DeltaTime )
 
 void AUFWeapon::AttachToOwner()
 {
-	AttachRootComponentTo(owningCharacter->GetMesh(), "middle_01_r", EAttachLocation::SnapToTarget);
+	//AttachRootComponentTo(owningCharacter->GetMesh(), AttachTagName, EAttachLocation::SnapToTarget);
+	AttachToComponent(owningCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachTagName);
+	//WeaponMesh->AttachToComponent(owningCharacter->GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachTagName);
 	//SetActorLocation(GetActorLocation() + WeaponPositionOffSet);
 	WeaponMesh->SetRelativeLocationAndRotation(WeaponPositionOffSet, WeaponRotationOffSet.Quaternion());//SetWorldLocationAndRotation(WeaponMesh->GetComponentLocation() + WeaponPositionOffSet, WeaponRotationOffSet);
+	Attach_To_Owner_Event();
 	//WeaponMesh->SetWorldRotation(WeaponRotationOffSet);
 	//SetActorRotation(WeaponRotationOffSet);
 }
