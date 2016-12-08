@@ -284,4 +284,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = UFWeapon)
 		void Attach_To_Owner_Event();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = UFWeapon)
+		void Reload_Event();
 };

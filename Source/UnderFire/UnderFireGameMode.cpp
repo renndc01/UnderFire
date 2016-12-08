@@ -9,7 +9,7 @@ AUnderFireGameMode::AUnderFireGameMode(const FObjectInitializer& ObjectInitializ
 	: Super(ObjectInitializer)
 {
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Underfire/Blueprints/UnderfirePlayerCharacterBP"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Underfire/Blueprints/Characters/UnderfirePlayerCharacterBP"));
 	
 	if (PlayerPawnClassFinder.Class != NULL)
 	{

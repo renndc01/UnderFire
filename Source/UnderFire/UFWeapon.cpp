@@ -131,6 +131,7 @@ void AUFWeapon::Reload()
 	{
 		return;
 	}
+	Reload_Event();
 	DetermineWeaponState();
 	//try and play the sound if specified
 	if (ReloadSound != NULL)
