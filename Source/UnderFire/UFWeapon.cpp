@@ -72,7 +72,8 @@ void AUFWeapon::AttachToOwner()
 	AttachToComponent(owningCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachTagName);
 	//WeaponMesh->AttachToComponent(owningCharacter->GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachTagName);
 	//SetActorLocation(GetActorLocation() + WeaponPositionOffSet);
-	WeaponMesh->SetRelativeLocationAndRotation(WeaponPositionOffSet, WeaponRotationOffSet.Quaternion());//SetWorldLocationAndRotation(WeaponMesh->GetComponentLocation() + WeaponPositionOffSet, WeaponRotationOffSet);
+	//WeaponMesh->SetRelativeLocationAndRotation(WeaponPositionOffSet, WeaponRotationOffSet.Quaternion());
+	WeaponMesh->SetRelativeLocationAndRotation(WeaponPositionOffSet, WeaponRotationOffSet);//SetWorldLocationAndRotation(WeaponMesh->GetComponentLocation() + WeaponPositionOffSet, WeaponRotationOffSet);
 	Attach_To_Owner_Event();
 	//WeaponMesh->SetWorldRotation(WeaponRotationOffSet);
 	//SetActorRotation(WeaponRotationOffSet);
