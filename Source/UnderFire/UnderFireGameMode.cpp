@@ -27,6 +27,10 @@ AUnderFireGameMode::AUnderFireGameMode(const FObjectInitializer& ObjectInitializ
 void AUnderFireGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	AllWeaponsOnGround.Empty();
+	allCharacters.Empty();
+	allAi.Empty();
+	allPlayers.Empty();
 
 	for (TActorIterator<AUFWeapon> WeaponItr(GetWorld()); WeaponItr; ++WeaponItr)
 	{
@@ -37,16 +41,31 @@ void AUnderFireGameMode::Tick(float DeltaTime)
 		}
 	}
 
-	for (TActorIterator<AUnderFirePlayerCharacter> PlayerItr(GetWorld()); PlayerItr; ++PlayerItr)
+	for (TActorIterator<AUnderFireCharacter> CharacterItr(GetWorld()); CharacterItr; ++CharacterItr)
 	{
-		AUnderFirePlayerCharacter* player = *PlayerItr;
-		players.Add(player);
+		AUnderFireCharacter* Character = *CharacterItr;
+		allCharacters.Add(Character);
 	}
-
+	
+	/*
 	for (TActorIterator<AUnderFireAiCharacter> AiItr(GetWorld()); AiItr; ++AiItr)
 	{
 		AUnderFireAiCharacter* ai = *AiItr;
 		allAi.Add(ai);
+	}*/
+
+	for (AUnderFireCharacter* character : allCharacters)
+	{
+		AUnderFireAiCharacter* ai = Cast<AUnderFireAiCharacter>(character); 
+		if (ai)
+		{
+			allAi.Add(ai);
+		}
+		AUnderFirePlayerCharacter* player = Cast<AUnderFirePlayerCharacter>(character);
+		if (player)
+		{
+			allPlayers.Add(player);
+		}
 	}
 }
 
@@ -70,7 +89,7 @@ TArray<AUnderFirePlayerCharacter*> AUnderFireGameMode::allPlayersOnTeam(ETeam te
 
 	TArray<AUnderFirePlayerCharacter*> onTeam;
 
-	for (AUnderFirePlayerCharacter* temp : players)
+	for (AUnderFirePlayerCharacter* temp : allPlayers)
 	{
 		if (temp->Team == team)
 		{
@@ -79,5 +98,4 @@ TArray<AUnderFirePlayerCharacter*> AUnderFireGameMode::allPlayersOnTeam(ETeam te
 	}
 
 	return onTeam;
-
 }

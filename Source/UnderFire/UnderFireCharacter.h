@@ -198,6 +198,8 @@ public:
 
 	void BodyFadeOut(float DeltaTime);
 
+	void Death();
+
 	UFUNCTION(BlueprintCallable, Category = UFCharacter)
 		bool getIsAI() { return isAi; }
 
@@ -217,8 +219,11 @@ public:
 		bool IsCharacterCloseEnoughToInteract(AActor* otherActor);
 
 	UFUNCTION(BlueprintCallable, Category = UFHealth)
-		void DoDamage(float damage);
+		void DoDamageCPlusPlus(float damage);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category = UFWeapon)
-		void DoDamage_Event();
+		void DoDamage_Event(float damage);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = UFHealth)
+		void Death_Event();
 };

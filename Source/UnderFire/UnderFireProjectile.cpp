@@ -65,7 +65,7 @@ void AUnderFireProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 
 void AUnderFireProjectile::DoDamage(AUnderFireCharacter* HitCharacter, float damage)
 {
-	HitCharacter->DoDamage(damage);
+	HitCharacter->DoDamageCPlusPlus(damage);
 	DoDamage_Event();
 }
 /*

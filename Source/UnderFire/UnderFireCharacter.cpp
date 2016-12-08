@@ -135,44 +135,6 @@ void AUnderFireCharacter::OnFirePressed()
 	}
 	//call fire on the currently selected weapon
 	currentWeapon->StartFire();
-	// try and fire a projectile
-//	if (ProjectileClass != NULL)
-//	{
-//		UWorld* const World = GetWorld();
-//		if (World != NULL)
-//		{
-//			const FRotator SpawnRotation = GetControlRotation();
-//			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-////			const FVector SpawnLocation = ((TP_MuzzleLocation != nullptr) ? TP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
-//
-//			// spawn the projectile at the muzzle
-//			World->SpawnActor<AUnderFireProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
-//
-//		}
-//	}
-
-	// try and play the sound if specified
-	//if (FireSound != NULL)
-	//{
-	//	UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	//}
-
-	// try and play a firing animation if specified
-	//if (FireAnimation != NULL)
-	//{
-	//	// Get the animation object for the arms mesh
-	//	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	//	if (AnimInstance != NULL)
-	//	{
-	//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Playing fire animtion"));
-	//		//AnimInstance->PlaySlotAnimationAsDynamicMontage(FireAnimation, TEXT("UpperBody"));
-	//	}
-	//}
-	/*AUFWeapon* weapon = Cast<AUFWeapon>(inventory[currerntInventoryIndex]);
-	if (weapon)
-	{
-		weapon->Fire();
-	}*/
 }
 
 void AUnderFireCharacter::OnFireReleased()
@@ -195,52 +157,78 @@ void AUnderFireCharacter::OnReloadPressed()
 
 void AUnderFireCharacter::MoveForward(float Value)
 {
-	if (Value != 0.0f)
+	if (!isDead)
 	{
-		// add movement in that direction
-		AddMovementInput(GetActorForwardVector(), Value);
+		if (Value != 0.0f)
+		{
+			// add movement in that direction
+			AddMovementInput(GetActorForwardVector(), Value);
+		}
 	}
 }
 
 void AUnderFireCharacter::MoveRight(float Value)
 {
-	if (Value != 0.0f)
+	if (!isDead)
 	{
-		// add movement in that direction
-		AddMovementInput(GetActorRightVector(), Value);
+		if (Value != 0.0f)
+		{
+			// add movement in that direction
+			AddMovementInput(GetActorRightVector(), Value);
+		}
 	}
 }
 
 void AUnderFireCharacter::TurnAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
-	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	if (!isDead)
+	{
+		// calculate delta for this frame from the rate information
+		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	}
 }
 
 void AUnderFireCharacter::LookUpAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
-	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	if (!isDead)
+	{
+		// calculate delta for this frame from the rate information
+		AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	}
 }
 
+/*
+	callback function to make the character crouch
+*/
 void AUnderFireCharacter::ToggleCrouch()
 {
-	if (CanCrouch())
+	if (!isDead)
 	{
-		Crouch();
+		if (CanCrouch())
+		{
+			Crouch();
+		}
+		else
+		{
+			UnCrouch();
+		}
 	}
-	else
-	{
-		UnCrouch();
-	}
-
 }
 
+/*
+	function for when the player aims down the sights, Honestly its names wrong, should be ADS not AIDS
+*/
 void AUnderFireCharacter::OnAIDS()
 {
-	isAIDS = !isAIDS;
+	if (!isDead)
+	{
+		isAIDS = !isAIDS;
+	}
 }
 
+/*
+	fades the body out after death, doesn't work right now because of material issues
+*/
 void AUnderFireCharacter::BodyFadeOut(float DeltaTime)
 {
 	if (isDead)
@@ -254,31 +242,47 @@ void AUnderFireCharacter::BodyFadeOut(float DeltaTime)
 	}
 }
 
+/*
+	adds a weapon to the inventory, used for giving a weapon
+*/
 void AUnderFireCharacter::addItemToInventory(AUFWeapon* item)
 {
-	if (inventory.Contains(item))
+	if (!isDead)
 	{
-		int32 index = inventory.Find(item);
-		inventory.RemoveAt(index);
-		inventory.Insert(item, index);
-	}
-	else if (!inventory.Contains(item))
-	{
+
+		if (inventory.Contains(item))
+		{
+			int32 index = inventory.Find(item);
+			inventory.RemoveAt(index);
+			inventory.Insert(item, index);
+		}
+		else if (!inventory.Contains(item))
+		{
+			inventory.Add(item);
+		}
+		//item->inventorySlot = inventory.Num();
 		inventory.Add(item);
 	}
-	//item->inventorySlot = inventory.Num();
-	inventory.Add(item);
-	
 }
 
+/*
+	returns the inventory array 
+*/
 TArray<AUFWeapon*> AUnderFireCharacter::GetInventory()
 {
 
 	return inventory;
 }
 
+/*
+	cycle the current weapon to the next weapon in the inventory
+*/
 void AUnderFireCharacter::CycleNextWeapon()
 {
+	if (isDead)
+	{
+		return;
+	}
 	currentWeapon->CycleIsSelected();
 	currentWeapon->WeaponMesh->SetHiddenInGame(true);
 
@@ -293,8 +297,16 @@ void AUnderFireCharacter::CycleNextWeapon()
 	currentWeapon->WeaponMesh->SetHiddenInGame(false);
 }
 
+
+/*
+	cycle the current weapon to the previous weapon in the inventory
+*/
 void AUnderFireCharacter::CyclePreviousWeapon()
 {
+	if (isDead)
+	{
+		return;
+	}
 	currentWeapon->CycleIsSelected();
 	currentWeapon->WeaponMesh->SetHiddenInGame(true);
 	currentInventoryIndex--;
@@ -308,6 +320,10 @@ void AUnderFireCharacter::CyclePreviousWeapon()
 	
 }
 
+
+/*
+	determines if the given weapon is in the characters inventory
+*/
 bool AUnderFireCharacter::CharacterHasWeapon(AUFWeapon* weapon)
 {
 	for (AUFWeapon* tempWeapon : inventory)
@@ -320,17 +336,34 @@ bool AUnderFireCharacter::CharacterHasWeapon(AUFWeapon* weapon)
 	return false;
 }
 
+/*
+	determines if the character is close enough to interact with the other actor
+*/
 bool AUnderFireCharacter::IsCharacterCloseEnoughToInteract(AActor* otherActor)
 {
 	return (MaxDistanceToInteract >= FVector::Dist(GetActorLocation(), otherActor->GetActorLocation()));
 }
 
-void AUnderFireCharacter::DoDamage(float damage)
+
+/*
+	apply damage to the character
+*/
+void AUnderFireCharacter::DoDamageCPlusPlus(float damage)
 {
-	DoDamage_Event();
 	CurrentHealth -= damage;
+	
+	if (CurrentHealth <= 0)
+	{
+		Death();
+	}
+	DoDamage_Event(damage);
+	
 }
 
+
+/*
+	give player health back
+*/
 void AUnderFireCharacter::RegenerateHealth()
 {
 	CurrentHealth += RegenerateHealthPercentage * MaxHealth;
@@ -338,4 +371,13 @@ void AUnderFireCharacter::RegenerateHealth()
 	{
 		CurrentHealth = MaxHealth;
 	}
+}
+
+/*
+	callback for death
+*/
+void AUnderFireCharacter::Death()
+{
+	Death_Event();
+	isDead = true;
 }

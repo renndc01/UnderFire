@@ -17,8 +17,11 @@ void AUFGrenade::Fire()
 
 	if (ProjectileClass)
 	{
-		FRotator rotation = owningCharacter->GetMesh()->GetSocketRotation(AttachTagName);
-		FVector location = owningCharacter->GetMesh()->GetSocketLocation(AttachTagName);
+		//FRotator rotation = owningCharacter->GetMesh()->GetSocketRotation(AttachTagName);
+		//FVector location = owningCharacter->GetMesh()->GetSocketLocation(AttachTagName);
+		FRotator rotation = owningCharacter->GetActorRotation();
+		FVector location = owningCharacter->GetActorLocation();
+
 		AUnderFireProjectile* projectile = GetWorld()->SpawnActor<AUnderFireProjectile>(ProjectileClass, location, rotation);
 		//projectile->InitializeVelocity(Velocity, 3.f);
 		projectile->ProjectileMovement->MaxSpeed = Velocity;

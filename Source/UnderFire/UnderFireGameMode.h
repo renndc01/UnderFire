@@ -22,11 +22,13 @@ public:
 		TArray<AUFWeapon*> AllWeaponsOnGround;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameModeInfo)
-		TArray<AUnderFirePlayerCharacter*> players;
+		TArray<AUnderFirePlayerCharacter*> allPlayers;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameModeInfo)
 		TArray<AUnderFireAiCharacter*> allAi;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GameModeInfo)
+		TArray<AUnderFireCharacter*> allCharacters;
 
 	UFUNCTION(BlueprintCallable, Category = GameModeInfo)
 		TArray<AUnderFireAiCharacter*> allAiOnTeam(ETeam team);
